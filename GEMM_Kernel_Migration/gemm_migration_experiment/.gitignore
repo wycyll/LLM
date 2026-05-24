@@ -1,0 +1,10 @@
+build/
+generated/
+logs/
+results/
+__pycache__/
+*.py[cod]
+reports/*/final_report.pdf
+reports/*/slides.pptx
+third_party/*
+!third_party/.gitkeep

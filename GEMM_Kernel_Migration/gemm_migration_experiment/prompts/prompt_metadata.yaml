@@ -1,0 +1,34 @@
+{
+  "p0_no_hw_hint": {
+    "description": "No hardware-specific hint beyond source and target names in plain text.",
+    "expected_signal": "Tests whether the model spontaneously performs architecture-aware migration."
+  },
+  "p1_target_name_only": {
+    "description": "Gives target GPU name and SM architecture only.",
+    "expected_signal": "Tests whether the model maps hardware names to optimization choices."
+  },
+  "p2_hw_feature_table": {
+    "description": "Gives explicit V100/A100/H100 feature table.",
+    "expected_signal": "Tests whether explicit hardware facts become compilable and correct code."
+  },
+  "p3_target_example": {
+    "description": "Gives target notes and a target-style reference seed.",
+    "expected_signal": "Tests whether few-shot guidance improves correctness and target-feature evidence."
+  },
+  "p4_hopper_compile_safe": {
+    "description": "H100 prompt tuned for compileability/correctness after observing fake or invalid Hopper feature code.",
+    "expected_signal": "Tests whether explicit anti-pseudo-code constraints improve compile and correctness rates."
+  },
+  "p5_hopper_feature_probe": {
+    "description": "H100 prompt that deliberately asks for WGMMA/TMA/mbarrier/warpgroup evidence.",
+    "expected_signal": "Tests whether stronger feature pressure yields real SASS evidence or just more compile failures."
+  },
+  "p6_kernelwiki_hopper_audit_safe": {
+    "description": "KernelWiki-informed H100 prompt that separates Hopper from Blackwell and prioritizes irregular-shape correctness.",
+    "expected_signal": "Tests whether Wiki facts plus boundary/alignment constraints improve arbitrary-shape correctness without fake features."
+  },
+  "p7_kernelwiki_hopper_feature_evidence": {
+    "description": "KernelWiki-informed H100 feature-evidence prompt for real sm90 WGMMA/TMA attempts with correctness constraints.",
+    "expected_signal": "Tests whether Wiki feature guidance can produce compilable target-feature evidence rather than keyword-only code."
+  }
+}

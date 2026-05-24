@@ -1,0 +1,3 @@
+level,problem_id,problem_name,operator_type,num_iterations,compile_rate,correctness_rate,constraint_violation_count,first_correct_iter,convergence_iter_95pct_best,best_iter,initial_correct_speedup,best_speedup,final_correct_speedup,relative_gain_from_first_correct,oscillation_count,regression_count,category
+1,33,33_BatchNorm.py,normalization,3,1.0,0.3333333333333333,0,1,1,1,0.5993377483443709,0.5993377483443709,0.5993377483443709,0.0,0,0,low-iteration-benefit
+1,41,41_Max_Pooling_1D.py,pooling,3,1.0,1.0,0,0,0,0,1.5168539325842698,1.5168539325842698,1.471389645776567,0.0,1,1,oscillatory

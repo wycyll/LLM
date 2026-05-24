@@ -1,0 +1,39 @@
+{
+  "level1": {
+    "1_Square_matrix_multiplication_.py": {
+      "mean": 21.1,
+      "hardware": "NVIDIA GeForce RTX 4060 Laptop GPU",
+      "device": "cuda:0",
+      "source": "eval_from_generations printed ref_runtime_stats mean",
+      "num_trials": 3
+    },
+    "14_Matmul_for_upper_triangular_matrices.py": {
+      "mean": 19.9,
+      "hardware": "NVIDIA GeForce RTX 4060 Laptop GPU",
+      "device": "cuda:0",
+      "source": "eval_from_generations printed ref_runtime_stats mean",
+      "num_trials": 3
+    },
+    "15_Matmul_for_lower_triangular_matrices.py": {
+      "mean": 21.1,
+      "hardware": "NVIDIA GeForce RTX 4060 Laptop GPU",
+      "device": "cuda:0",
+      "source": "eval_from_generations printed ref_runtime_stats mean",
+      "num_trials": 3
+    },
+    "16_Matmul_with_transposed_A.py": {
+      "mean": 20.6,
+      "hardware": "NVIDIA GeForce RTX 4060 Laptop GPU",
+      "device": "cuda:0",
+      "source": "eval_from_generations printed ref_runtime_stats mean",
+      "num_trials": 3
+    },
+    "17_Matmul_with_transposed_B.py": {
+      "mean": 21.0,
+      "hardware": "NVIDIA GeForce RTX 4060 Laptop GPU",
+      "device": "cuda:0",
+      "source": "eval_from_generations printed ref_runtime_stats mean",
+      "num_trials": 3
+    }
+  }
+}

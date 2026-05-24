@@ -1,0 +1,68 @@
+{
+  "required_tasks": [
+    {
+      "task_id": "T1_v100_to_a100",
+      "source_gpu": "V100",
+      "source_key": "v100",
+      "source_arch": "sm70",
+      "target_gpu": "A100",
+      "target_key": "a100",
+      "target_arch": "sm80",
+      "source_kernel_path": "references/v100_sm70/kernel.cu",
+      "source_launch_path": "references/v100_sm70/launch.cu"
+    },
+    {
+      "task_id": "T2_a100_to_h100",
+      "source_gpu": "A100",
+      "source_key": "a100",
+      "source_arch": "sm80",
+      "target_gpu": "H100",
+      "target_key": "h100",
+      "target_arch": "sm90",
+      "source_kernel_path": "references/a100_sm80/kernel.cu",
+      "source_launch_path": "references/a100_sm80/launch.cu"
+    },
+    {
+      "task_id": "T3_h100_to_a100",
+      "source_gpu": "H100",
+      "source_key": "h100",
+      "source_arch": "sm90",
+      "target_gpu": "A100",
+      "target_key": "a100",
+      "target_arch": "sm80",
+      "source_kernel_path": "references/h100_sm90/kernel.cu",
+      "source_launch_path": "references/h100_sm90/launch.cu"
+    }
+  ],
+  "optional_tasks": [
+    {"task_id": "T4_v100_to_h100", "source_key": "v100", "target_key": "h100"},
+    {"task_id": "T5_naive_to_a100", "source_key": "naive", "target_key": "a100"},
+    {"task_id": "T6_naive_to_h100", "source_key": "naive", "target_key": "h100"},
+    {"task_id": "T7_shared_tiled_to_a100", "source_key": "shared_tiled", "target_key": "a100"},
+    {"task_id": "T8_shared_tiled_to_h100", "source_key": "shared_tiled", "target_key": "h100"},
+    {
+      "task_id": "T9_a100_to_v100",
+      "source_gpu": "A100",
+      "source_key": "a100",
+      "source_arch": "sm80",
+      "target_gpu": "V100",
+      "target_key": "v100",
+      "target_arch": "sm70",
+      "source_kernel_path": "references/a100_sm80/kernel.cu",
+      "source_launch_path": "references/a100_sm80/launch.cu"
+    },
+    {
+      "task_id": "T10_h100_to_v100",
+      "source_gpu": "H100",
+      "source_key": "h100",
+      "source_arch": "sm90",
+      "target_gpu": "V100",
+      "target_key": "v100",
+      "target_arch": "sm70",
+      "source_kernel_path": "references/h100_sm90/kernel.cu",
+      "source_launch_path": "references/h100_sm90/launch.cu"
+    }
+  ],
+  "prompts": ["p0_no_hw_hint", "p1_target_name_only", "p2_hw_feature_table", "p3_target_example", "p4_hopper_compile_safe", "p5_hopper_feature_probe", "p6_kernelwiki_hopper_audit_safe", "p7_kernelwiki_hopper_feature_evidence"],
+  "samples_per_prompt": 3
+}

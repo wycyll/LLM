@@ -1,0 +1,38 @@
+{
+  "gpus": {
+    "v100": {
+      "name": "NVIDIA V100",
+      "architecture": "Volta",
+      "sm": "sm70",
+      "cuda_architectures": "70",
+      "key_features": ["Volta Tensor Core", "WMMA", "mma.sync", "shared-memory tiling"],
+      "unsupported_features": ["cp.async", "TMA", "WGMMA", "mbarrier"]
+    },
+    "a100": {
+      "name": "NVIDIA A100",
+      "architecture": "Ampere",
+      "sm": "sm80",
+      "cuda_architectures": "80",
+      "key_features": ["Ampere Tensor Core", "cp.async", "multi-stage pipeline", "mma.sync", "ldmatrix"],
+      "unsupported_features": ["TMA", "WGMMA"]
+    },
+    "h100": {
+      "name": "NVIDIA H100",
+      "architecture": "Hopper",
+      "sm": "sm90",
+      "cuda_architectures": "90",
+      "key_features": ["Hopper Tensor Core", "TMA", "WGMMA", "mbarrier", "warpgroup specialization", "producer-consumer warp specialization"],
+      "unsupported_features": []
+    }
+  },
+  "timing": {
+    "formal_warmup": 10,
+    "formal_repeat": 100,
+    "smoke_warmup": 2,
+    "smoke_repeat": 5
+  },
+  "correctness": {
+    "rtol": 0.01,
+    "atol": 0.01
+  }
+}

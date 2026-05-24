@@ -1,0 +1,14 @@
+{
+  "level1": {
+    "6_Matmul_with_large_K_dimension_.py": {
+      "mean": 14.2,
+      "std": 0.434,
+      "min": 12.0,
+      "max": 13.3,
+      "num_trials": 5,
+      "hardware": "NVIDIA GeForce RTX 4060 Laptop GPU",
+      "device": "cuda:0",
+      "source": "local eval_from_generations printed ref_runtime_stats mean"
+    }
+  }
+}

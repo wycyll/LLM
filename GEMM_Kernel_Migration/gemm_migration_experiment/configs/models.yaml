@@ -1,0 +1,9 @@
+{
+  "default_model": "azure/gpt-5.2-chat",
+  "temperature": 1.0,
+  "max_tokens": 16384,
+  "notes": [
+    "For Azure GPT-5 style deployments, omit top_p and only pass temperature when the service accepts it.",
+    "The generation script supports LiteLLM when installed; otherwise use --dry_run to materialize prompts."
+  ]
+}

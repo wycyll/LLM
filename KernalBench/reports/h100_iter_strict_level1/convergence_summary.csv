@@ -1,0 +1,6 @@
+level,problem_id,problem_name,operator_type,num_iterations,compile_rate,correctness_rate,constraint_violation_count,first_correct_iter,convergence_iter_95pct_best,best_iter,initial_correct_speedup,best_speedup,final_correct_speedup,relative_gain_from_first_correct,oscillation_count,regression_count,category
+1,1,1_Square_matrix_multiplication_.py,matmul,3,1.0,0.6666666666666666,0,0,0,0,0.1738562091503268,0.1738562091503268,0.15739644970414204,0.0,0,1,oscillatory
+1,6,6_Matmul_with_large_K_dimension_.py,matmul,3,0.6666666666666666,0.3333333333333333,1,1,1,1,0.034482758620689655,0.034482758620689655,0.034482758620689655,0.0,0,0,low-iteration-benefit
+1,19,19_ReLU.py,activation,3,1.0,1.0,0,0,1,2,0.934873949579832,1.0,1.0,0.06966292134831446,0,0,early-converged
+1,33,33_BatchNorm.py,normalization,3,0.0,0.0,0,,,,,,,,0,0,no-correct-kernel
+1,41,41_Max_Pooling_1D.py,pooling,3,0.0,0.0,0,,,,,,,,0,0,no-correct-kernel

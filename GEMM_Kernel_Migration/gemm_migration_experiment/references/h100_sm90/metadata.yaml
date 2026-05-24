@@ -1,0 +1,8 @@
+{
+  "gpu": "H100",
+  "arch": "sm90",
+  "status": "fallback_source_seed",
+  "claims": ["shared memory tiling"],
+  "missing_for_expert_reference": ["TMA", "WGMMA", "mbarrier", "warpgroup specialization"],
+  "notes": "Compilable Hopper-target fallback seed. Replace with an expert SM90 WGMMA/TMA kernel before reporting native_ref_tflops."
+}

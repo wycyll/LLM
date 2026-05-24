@@ -1,0 +1,7 @@
+{
+  "gpu": "A100",
+  "arch": "sm80",
+  "status": "source_seed",
+  "claims": ["cp.async", "shared memory tiling"],
+  "notes": "Educational Ampere seed that exposes cp.async syntax. It is not an expert Tensor Core native reference."
+}

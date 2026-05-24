@@ -1,0 +1,7 @@
+{
+  "gpu": "V100",
+  "arch": "sm70",
+  "status": "source_seed",
+  "claims": ["WMMA", "mma.sync path after compilation", "shared-memory-free warp tile"],
+  "notes": "Compliable Volta-style source seed for prompt input and harness smoke testing. Replace with an expert native reference for final native_ref_tflops."
+}
