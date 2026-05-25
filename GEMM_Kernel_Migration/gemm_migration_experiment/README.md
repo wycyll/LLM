@@ -25,10 +25,10 @@ V100/A100/H100 migration conclusion.
 ## What Is Included
 
 - `configs/`: GPU metadata, shape suites, model defaults, and task matrix.
-- `prompts/`: P0-P7 ablation templates from the workflow and follow-up prompt
-  fixes. P4 is compile/correctness constrained for H100; P5 is a Hopper feature
-  probe for WGMMA/TMA/mbarrier/warpgroup claims. P6/P7 are KernelWiki-informed
-  Hopper prompts that explicitly avoid Blackwell-only features.
+- `prompts/`: the active prompt set is capped at four baseline prompts: P0 no
+  hardware hint, P1 target name only, P2 hardware feature table, and P3 target
+  example. Earlier exploratory prompts are preserved in Git history and
+  historical reports, not in the current prompt directory or default matrix.
 - `references/`: source seed kernels and architecture notes for V100, A100, and
   H100. These are useful inputs for generation and harness smoke tests; replace
   or augment them with expert kernels before reporting native-reference
@@ -77,7 +77,7 @@ python3 scripts/00_prepare_cases.py --run_id 20260524_run01 --samples 3
 
 python3 scripts/01_generate_llm.py \
   --run_id 20260524_run01 \
-  --model azure/gpt-5.2-chat \
+  --model azure/gpt-5.4 \
   --env_file ../../KernalBench/.env \
   --all_cases
 
@@ -116,13 +116,12 @@ export LD_LIBRARY_PATH="$CUDA_HOME/lib64:${LD_LIBRARY_PATH:-}"
 - `20260524_run01`: `gpt-5.2-chat`, P0-P3 baseline. T2 A100-to-H100 has been
   built, correctness-tested, formal-timed (`warmup=10`, `repeat=100`), and SASS
   scanned on H100. A100/V100 target tasks are generated but not target-evaluated.
-- `20260524_run02_gpt54`: `gpt-5.4`, P0-P3 baseline. T2 A100-to-H100 has the
-  same H100 evaluation coverage as run01.
-- `20260524_run03_gpt54_promptfix`: `gpt-5.4`, P4-P5 prompt ablation. T2
-  A100-to-H100 has the same H100 evaluation coverage as run01.
-- `20260524_run04_wiki_gpt54_large`: `gpt-5.4`, P3/P4/P6/P7 with 10 samples
-  per prompt. T2 A100-to-H100 has H100 compile, aligned correctness, irregular
-  audit, audit-pass-only formal timing, static feature scan, and SASS scan.
+- `20260524_run02_gpt54`: `gpt-5.4`, P0-P3 baseline. This is the primary H100
+  prompt-ablation run for answering whether no hint, target name, hardware
+  feature table, or target example helps.
+- `20260524_run03_gpt54_promptfix` and `20260524_run04_wiki_gpt54_large` are
+  exploratory follow-up runs. They are useful evidence about failure modes, but
+  they are no longer part of the active prompt matrix.
 - Earlier smoke timing CSVs are preserved as `performance_smoke_results.csv`;
   `performance_results.csv` now contains formal timing for the H100 runs above.
 - A stricter irregular-shape audit suite is available at
@@ -131,14 +130,15 @@ export LD_LIBRARY_PATH="$CUDA_HOME/lib64:${LD_LIBRARY_PATH:-}"
   candidates passing the audit, run02 has 3/6, run03 has 3/3, and run04 has
   20/33 audited compiled candidates. In run04, P4 has 9/10 aligned correctness
   but 0/10 irregular-audit pass, so aligned correctness alone is not sufficient.
-- In run04, P6 is the strongest current H100 prompt: 8/10 compile, 6/10 aligned
-  all-correct, 6/7 audited compiled candidates passing irregular shapes, and
-  best audit-pass formal timing of 30.359 TFLOPS on the performance suite.
+- In the primary `gpt-5.4` P0-P3 baseline, only P3 target-example prompting has
+  robust H100 evidence: 3/3 compile, 3/3 aligned correctness, 3/3 irregular
+  audit pass, and best audit-pass formal timing of 6.625 TFLOPS. P0 and P1 do
+  not pass irregular audit; P2 has 0/3 compile in this run.
 - Nsight Compute was attempted for the top candidate in each H100 run, but the
   current node lacks the required `nsight-compute` installation directory behind
   the exposed `ncu` wrapper, so profiler evidence is unavailable there for now.
-- `results/model_comparison_20260524_t2.md` summarizes the current H100 model
-  and prompt comparison.
+- `reports/20260524_baseline_p0_p3/final_report.md` summarizes the P0-P3 H100
+  baseline prompt ablation.
 
 When an A100 is available, the next formal target evaluations are the generated
 run01 A100 tasks: `T1_v100_to_a100` and `T3_h100_to_a100`, built with `--arch

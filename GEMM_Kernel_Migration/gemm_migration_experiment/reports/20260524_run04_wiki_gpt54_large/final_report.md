@@ -31,6 +31,8 @@ Overall audit pass: 20/33 (60.6%).
 | T2_a100_to_h100 | p6_kernelwiki_hopper_audit_safe | 7 | 6/7 (85.7%) |
 | T2_a100_to_h100 | p7_kernelwiki_hopper_feature_evidence | 6 | 5/6 (83.3%) |
 
+
+
 ## Run Scope And Caveats
 
 - This run covers these prompt IDs only: `p3_target_example, p4_hopper_compile_safe, p6_kernelwiki_hopper_audit_safe, p7_kernelwiki_hopper_feature_evidence`.
@@ -38,7 +40,7 @@ Overall audit pass: 20/33 (60.6%).
 - The summary count `23/40` is a row-level rule: a sample is counted when `static_features` contains one of `wgmma, tma, cp_async` but `sass_features` contains none of those same tokens. It is not computed by subtracting aggregate table percentages, and one sample can contain multiple static features.
 - `target_sass` is evidence that selected instruction-family tokens appear in SASS. It is not a performance claim and does not imply the kernel is correct, robust, or fast.
 - Nsight Compute profile evidence is unavailable for this run, so hardware-feature confirmation here is limited to static source scanning and SASS inspection.
-- Performance was measured for 20 kernels selected after the irregular-shape audit, producing 120 shape-level rows. Treat `perf_valid` as an audit-pass selected subset, not as a measurement over every aligned-correct kernel.
+- Performance rows exist for 20 kernels, producing 120 shape-level rows. Interpret TFLOPS only after cross-checking the irregular-shape audit; aligned-correct but audit-failing kernels should not be reported as generally correct.
 - `p4_hopper_compile_safe` has no performance rows because it passed 0/10 irregular-audit cases and was filtered out before formal timing. The audit logs include `misaligned address` failures. Do not interpret its `perf_valid=0` as a measured slow kernel.
 
 ## Workflow Questions

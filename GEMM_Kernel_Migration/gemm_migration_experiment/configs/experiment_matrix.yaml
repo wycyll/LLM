@@ -63,6 +63,6 @@
       "source_launch_path": "references/h100_sm90/launch.cu"
     }
   ],
-  "prompts": ["p0_no_hw_hint", "p1_target_name_only", "p2_hw_feature_table", "p3_target_example", "p4_hopper_compile_safe", "p5_hopper_feature_probe", "p6_kernelwiki_hopper_audit_safe", "p7_kernelwiki_hopper_feature_evidence"],
+  "prompts": ["p0_no_hw_hint", "p1_target_name_only", "p2_hw_feature_table", "p3_target_example"],
   "samples_per_prompt": 3
 }
