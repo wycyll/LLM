@@ -149,6 +149,10 @@ feature scan, and SASS scan.
 
 The generated report answers the five workflow questions by separating:
 
+- why each GEMM implementation style fits V100, A100, or H100;
+- why the same implementation can become invalid or suboptimal on another GPU;
+- which migration patterns naive LLMs can reliably produce versus only name or
+  imitate superficially;
 - compile/run/correctness/performance evidence;
 - aligned-shape correctness versus irregular-shape boundary correctness;
 - source-code feature claims;
