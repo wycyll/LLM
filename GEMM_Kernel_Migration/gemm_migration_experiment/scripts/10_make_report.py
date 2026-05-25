@@ -155,12 +155,6 @@ def baseline_ablation_section(run_id: str, rows) -> str:
         return ""
 
     _audit_rows, audit_cases, pass_cases = audit_pass_cases(run_id)
-    interpretations = {
-        "p0_no_hw_hint": "No reliable migration signal: target-looking code may appear, but this run has no irregular-audit-pass P0 candidate.",
-        "p1_target_name_only": "Target name alone is weak: aligned-suite success or TFLOPS must be discounted if irregular audit fails.",
-        "p2_hw_feature_table": "The feature table does not help by itself here; it increases feature claims but hurts compile stability.",
-        "p3_target_example": "The target example is the only robust baseline prompt in this run; it improves correctness, but does not prove Hopper WGMMA/TMA use.",
-    }
     labels = {
         "p0_no_hw_hint": "no hardware hint",
         "p1_target_name_only": "target name only",
@@ -191,8 +185,28 @@ def baseline_ablation_section(run_id: str, rows) -> str:
             or [0.0]
         )
         best_text = f"{best_audit:.3f}" if best_audit else "-"
+        if prompt == "p0_no_hw_hint":
+            interpretation = (
+                "Some robust candidates exist, but success is target- and sample-dependent; no-hint migration is not reliable by itself."
+                if prompt_pass_cases
+                else "No reliable migration signal: target-looking code may appear, but this run has no irregular-audit-pass P0 candidate."
+            )
+        elif prompt == "p1_target_name_only":
+            interpretation = (
+                "Target naming can help some samples, but aligned-suite success or TFLOPS must still be discounted when irregular audit fails."
+                if prompt_pass_cases
+                else "Target name alone is weak: aligned-suite success or TFLOPS must be discounted if irregular audit fails."
+            )
+        elif prompt == "p2_hw_feature_table":
+            interpretation = (
+                "The feature table can produce an occasional robust sample, but it also increases feature claims and compile instability."
+                if prompt_pass_cases
+                else "The feature table does not help by itself here; it increases feature claims but hurts compile stability."
+            )
+        else:
+            interpretation = "Target examples are the most reliable baseline prompt overall, but passing examples still do not prove WGMMA/TMA-style target optimization."
         lines.append(
-            f"| {prompt} | {labels[prompt]} | {len(compiled)}/{len(attempted)} | {len(aligned_ok)}/{len(compiled) if compiled else len(attempted)} | {len(prompt_pass_cases)}/{len(prompt_audit_cases)} | {best_text} | {interpretations[prompt]} |"
+            f"| {prompt} | {labels[prompt]} | {len(compiled)}/{len(attempted)} | {len(aligned_ok)}/{len(compiled) if compiled else len(attempted)} | {len(prompt_pass_cases)}/{len(prompt_audit_cases)} | {best_text} | {interpretation} |"
         )
     lines.extend(
         [

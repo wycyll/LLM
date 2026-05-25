@@ -3,11 +3,11 @@
 ## Executive Summary
 
 - Samples generated: 60
-- Target-GPU compile attempted: 12/60 (20.0%)
-- Compile success among attempted: 10/12 (83.3%)
-- Aligned correctness shapes passed among attempted: 10/12 (83.3%)
-- Performance measured among attempted: 10/12 (83.3%)
-- Static WGMMA/TMA/cp.async claim without matching SASS confirmation among attempted samples: 5/12 (41.7%)
+- Target-GPU compile attempted: 36/60 (60.0%)
+- Compile success among attempted: 28/36 (77.8%)
+- Aligned correctness shapes passed among attempted: 25/36 (69.4%)
+- Performance measured among attempted: 15/36 (41.7%)
+- Static WGMMA/TMA/cp.async claim without matching SASS confirmation among attempted samples: 13/36 (36.1%)
 
 ## Results By Task And Prompt
 
@@ -17,18 +17,18 @@
 | T10_h100_to_v100 | p1_target_name_only | 3 | 0/3 | not run | not run | not run | 0.0% | not run |
 | T10_h100_to_v100 | p2_hw_feature_table | 3 | 0/3 | not run | not run | not run | 0.0% | not run |
 | T10_h100_to_v100 | p3_target_example | 3 | 0/3 | not run | not run | not run | 0.0% | not run |
-| T1_v100_to_a100 | p0_no_hw_hint | 3 | 0/3 | not run | not run | not run | 0.0% | not run |
-| T1_v100_to_a100 | p1_target_name_only | 3 | 0/3 | not run | not run | not run | 0.0% | not run |
-| T1_v100_to_a100 | p2_hw_feature_table | 3 | 0/3 | not run | not run | not run | 100.0% | not run |
-| T1_v100_to_a100 | p3_target_example | 3 | 0/3 | not run | not run | not run | 100.0% | not run |
+| T1_v100_to_a100 | p0_no_hw_hint | 3 | 3/3 | 100.0% | 66.7% | 33.3% | 0.0% | 66.7% |
+| T1_v100_to_a100 | p1_target_name_only | 3 | 3/3 | 100.0% | 100.0% | 0.0% | 0.0% | 100.0% |
+| T1_v100_to_a100 | p2_hw_feature_table | 3 | 3/3 | 0.0% | 0.0% | 0.0% | 100.0% | 0.0% |
+| T1_v100_to_a100 | p3_target_example | 3 | 3/3 | 100.0% | 100.0% | 0.0% | 100.0% | 100.0% |
 | T2_a100_to_h100 | p0_no_hw_hint | 3 | 3/3 | 100.0% | 100.0% | 100.0% | 100.0% | 100.0% |
 | T2_a100_to_h100 | p1_target_name_only | 3 | 3/3 | 100.0% | 100.0% | 100.0% | 100.0% | 100.0% |
 | T2_a100_to_h100 | p2_hw_feature_table | 3 | 3/3 | 33.3% | 33.3% | 33.3% | 66.7% | 0.0% |
 | T2_a100_to_h100 | p3_target_example | 3 | 3/3 | 100.0% | 100.0% | 100.0% | 100.0% | 0.0% |
-| T3_h100_to_a100 | p0_no_hw_hint | 3 | 0/3 | not run | not run | not run | 0.0% | not run |
-| T3_h100_to_a100 | p1_target_name_only | 3 | 0/3 | not run | not run | not run | 33.3% | not run |
-| T3_h100_to_a100 | p2_hw_feature_table | 3 | 0/3 | not run | not run | not run | 66.7% | not run |
-| T3_h100_to_a100 | p3_target_example | 3 | 0/3 | not run | not run | not run | 100.0% | not run |
+| T3_h100_to_a100 | p0_no_hw_hint | 3 | 3/3 | 66.7% | 66.7% | 66.7% | 0.0% | 66.7% |
+| T3_h100_to_a100 | p1_target_name_only | 3 | 3/3 | 66.7% | 66.7% | 66.7% | 33.3% | 66.7% |
+| T3_h100_to_a100 | p2_hw_feature_table | 3 | 3/3 | 66.7% | 0.0% | 0.0% | 66.7% | 66.7% |
+| T3_h100_to_a100 | p3_target_example | 3 | 3/3 | 100.0% | 100.0% | 0.0% | 100.0% | 100.0% |
 | T9_a100_to_v100 | p0_no_hw_hint | 3 | 0/3 | not run | not run | not run | 100.0% | not run |
 | T9_a100_to_v100 | p1_target_name_only | 3 | 0/3 | not run | not run | not run | 100.0% | not run |
 | T9_a100_to_v100 | p2_hw_feature_table | 3 | 0/3 | not run | not run | not run | 66.7% | not run |
@@ -37,15 +37,22 @@
 ## Irregular-Shape Correctness Audit
 
 This section uses `configs/shapes_correctness_audit.json` to stress non-tile-multiple boundary cases. It is stricter than the aligned correctness suite above.
-Overall audit pass: 4/10 (40.0%).
+Overall audit pass: 9/27 (33.3%).
 
 
 | task | prompt | compiled_audited | audit_all_correct |
 | --- | --- | ---: | ---: |
+| T1_v100_to_a100 | p0_no_hw_hint | 3 | 1/3 (33.3%) |
+| T1_v100_to_a100 | p1_target_name_only | 3 | 0/3 (0.0%) |
+| T1_v100_to_a100 | p3_target_example | 3 | 0/3 (0.0%) |
 | T2_a100_to_h100 | p0_no_hw_hint | 3 | 0/3 (0.0%) |
 | T2_a100_to_h100 | p1_target_name_only | 3 | 0/3 (0.0%) |
 | T2_a100_to_h100 | p2_hw_feature_table | 1 | 1/1 (100.0%) |
 | T2_a100_to_h100 | p3_target_example | 3 | 3/3 (100.0%) |
+| T3_h100_to_a100 | p0_no_hw_hint | 2 | 2/2 (100.0%) |
+| T3_h100_to_a100 | p1_target_name_only | 2 | 2/2 (100.0%) |
+| T3_h100_to_a100 | p2_hw_feature_table | 1 | 0/1 (0.0%) |
+| T3_h100_to_a100 | p3_target_example | 3 | 0/3 (0.0%) |
 
 ## Baseline Prompt Ablation Findings
 
@@ -53,10 +60,10 @@ This section answers the baseline prompt question using only P0-P3. The stricter
 
 | prompt | condition | compile | aligned_all_correct | irregular_audit | best_audit_pass_TFLOPS | interpretation |
 | --- | --- | ---: | ---: | ---: | ---: | --- |
-| p0_no_hw_hint | no hardware hint | 3/3 | 3/3 | 0/3 | - | No reliable migration signal: target-looking code may appear, but this run has no irregular-audit-pass P0 candidate. |
-| p1_target_name_only | target name only | 3/3 | 3/3 | 0/3 | - | Target name alone is weak: aligned-suite success or TFLOPS must be discounted if irregular audit fails. |
-| p2_hw_feature_table | hardware feature table | 1/3 | 1/1 | 1/1 | 5.550 | The feature table does not help by itself here; it increases feature claims but hurts compile stability. |
-| p3_target_example | target example | 3/3 | 3/3 | 3/3 | 8.750 | The target example is the only robust baseline prompt in this run; it improves correctness, but does not prove Hopper WGMMA/TMA use. |
+| p0_no_hw_hint | no hardware hint | 8/9 | 7/8 | 3/8 | 18.039 | Some robust candidates exist, but success is target- and sample-dependent; no-hint migration is not reliable by itself. |
+| p1_target_name_only | target name only | 8/9 | 8/8 | 2/8 | 3.703 | Target naming can help some samples, but aligned-suite success or TFLOPS must still be discounted when irregular audit fails. |
+| p2_hw_feature_table | hardware feature table | 3/9 | 1/3 | 1/2 | 5.550 | The feature table can produce an occasional robust sample, but it also increases feature claims and compile instability. |
+| p3_target_example | target example | 9/9 | 9/9 | 3/9 | 8.750 | Target examples are the most reliable baseline prompt overall, but passing examples still do not prove WGMMA/TMA-style target optimization. |
 
 Answer: in this baseline, hardware hints help only when they include a target-style example. Hardware name alone and feature-table text mainly produce claims or aligned-suite false positives; they do not produce robust H100 GEMM migration evidence.
 
@@ -93,10 +100,10 @@ LLM capability boundary observed so far:
 ## Run Scope And Caveats
 
 - This run covers these prompt IDs only: `p0_no_hw_hint, p1_target_name_only, p2_hw_feature_table, p3_target_example`.
-- The summary count `5/12` is a row-level rule: a sample is counted when `static_features` contains one of `wgmma, tma, cp_async` but `sass_features` contains none of those same tokens. It is not computed by subtracting aggregate table percentages, and one sample can contain multiple static features.
+- The summary count `13/36` is a row-level rule: a sample is counted when `static_features` contains one of `wgmma, tma, cp_async` but `sass_features` contains none of those same tokens. It is not computed by subtracting aggregate table percentages, and one sample can contain multiple static features.
 - `target_sass` is evidence that selected instruction-family tokens appear in SASS. It is not a performance claim and does not imply the kernel is correct, robust, or fast.
 - Nsight Compute profile evidence is unavailable for this run, so hardware-feature confirmation here is limited to static source scanning and SASS inspection.
-- Performance rows exist for 10 kernels, producing 60 shape-level rows. Interpret TFLOPS only after cross-checking the irregular-shape audit; aligned-correct but audit-failing kernels should not be reported as generally correct.
+- Performance rows exist for 15 kernels, producing 90 shape-level rows. Interpret TFLOPS only after cross-checking the irregular-shape audit; aligned-correct but audit-failing kernels should not be reported as generally correct.
 
 ## Workflow Questions
 

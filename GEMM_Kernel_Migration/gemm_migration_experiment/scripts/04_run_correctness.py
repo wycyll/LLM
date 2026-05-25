@@ -4,8 +4,25 @@ from __future__ import annotations
 
 import argparse
 import json
+from json import JSONDecodeError
 
 from common import ROOT, append_csv, ensure_run_dirs, filter_csv, normalize_target, read_csv, rel, run_command, write_text
+
+
+def parse_json_line(line: str):
+    json_text = line.strip()
+    if not json_text:
+        return None
+    if not json_text.startswith("{"):
+        start = json_text.find("{")
+        end = json_text.rfind("}")
+        if start == -1 or end == -1 or end <= start:
+            return None
+        json_text = json_text[start : end + 1]
+    try:
+        return json.loads(json_text)
+    except JSONDecodeError:
+        return None
 
 
 FIELDNAMES = [
@@ -101,9 +118,9 @@ def main() -> int:
             )
             continue
         for line in log_path.read_text(encoding="utf-8").splitlines():
-            if not line.strip():
+            result = parse_json_line(line)
+            if not result:
                 continue
-            result = json.loads(line)
             if result.get("mode") != "correctness":
                 continue
             output_rows.append(

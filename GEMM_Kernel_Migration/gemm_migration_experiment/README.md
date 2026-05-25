@@ -114,8 +114,9 @@ export LD_LIBRARY_PATH="$CUDA_HOME/lib64:${LD_LIBRARY_PATH:-}"
 ## Current Run Status
 
 - `20260524_run01`: `gpt-5.2-chat`, P0-P3 baseline. T2 A100-to-H100 has been
-  built, correctness-tested, formal-timed (`warmup=10`, `repeat=100`), and SASS
-  scanned on H100. A100/V100 target tasks are generated but not target-evaluated.
+  evaluated on H100. T1 V100-to-A100 and T3 H100-to-A100 have now been built,
+  correctness-tested, irregular-audited, audit-pass formal-timed, and SASS
+  scanned on A100. V100 target tasks remain generated but not target-evaluated.
 - `20260524_run02_gpt54`: `gpt-5.4`, P0-P3 baseline. This is the primary H100
   prompt-ablation run for answering whether no hint, target name, hardware
   feature table, or target example helps.
@@ -140,10 +141,11 @@ export LD_LIBRARY_PATH="$CUDA_HOME/lib64:${LD_LIBRARY_PATH:-}"
 - `reports/20260524_baseline_p0_p3/final_report.md` summarizes the P0-P3 H100
   baseline prompt ablation.
 
-When an A100 is available, the next formal target evaluations are the generated
-run01 A100 tasks: `T1_v100_to_a100` and `T3_h100_to_a100`, built with `--arch
-sm80` and evaluated with the aligned suite, irregular audit, performance, static
-feature scan, and SASS scan.
+The run01 A100 target tasks are complete: `T1_v100_to_a100` and
+`T3_h100_to_a100` were built with `--arch sm80` and evaluated with the aligned
+suite, irregular audit, audit-pass performance, static feature scan, and SASS
+scan. The remaining hardware gap is V100 target evaluation for
+`T9_a100_to_v100` and `T10_h100_to_v100`.
 
 ## Interpreting Results
 

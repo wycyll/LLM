@@ -52,6 +52,17 @@ def main() -> int:
     task_filter = filter_csv(args.task)
     prompt_filter = filter_csv(args.prompt)
     sample_filter = filter_csv(args.sample)
+    def selected_result_row(row: dict) -> bool:
+        if normalize_target(row.get("target_gpu", "")) != target_gpu:
+            return False
+        if task_filter and row.get("task_id", "") not in task_filter:
+            return False
+        if prompt_filter and row.get("prompt_id", "") not in prompt_filter:
+            return False
+        if sample_filter and row.get("sample_id", "") not in sample_filter:
+            return False
+        return True
+
     output_rows = []
     for row in compile_rows:
         if normalize_target(row.get("target_gpu", "")) != target_gpu:
@@ -133,9 +144,10 @@ def main() -> int:
                 }
             )
     output_path = ROOT / "results" / args.run_id / "correctness_audit_results.csv"
+    preserved_rows = [row for row in read_csv(output_path) if not selected_result_row(row)] if output_path.exists() else []
     if output_path.exists():
         output_path.unlink()
-    append_csv(output_path, FIELDNAMES, output_rows)
+    append_csv(output_path, FIELDNAMES, preserved_rows + output_rows)
     print(f"recorded {len(output_rows)} audit correctness rows")
     return 0
 

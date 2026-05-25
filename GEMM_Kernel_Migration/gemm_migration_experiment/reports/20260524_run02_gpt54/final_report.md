@@ -39,7 +39,7 @@ This section answers the baseline prompt question using only P0-P3. The stricter
 | p0_no_hw_hint | no hardware hint | 1/3 | 0/1 | 0/1 | - | No reliable migration signal: target-looking code may appear, but this run has no irregular-audit-pass P0 candidate. |
 | p1_target_name_only | target name only | 2/3 | 1/2 | 0/2 | - | Target name alone is weak: aligned-suite success or TFLOPS must be discounted if irregular audit fails. |
 | p2_hw_feature_table | hardware feature table | 0/3 | 0/3 | 0/0 | - | The feature table does not help by itself here; it increases feature claims but hurts compile stability. |
-| p3_target_example | target example | 3/3 | 3/3 | 3/3 | 6.625 | The target example is the only robust baseline prompt in this run; it improves correctness, but does not prove Hopper WGMMA/TMA use. |
+| p3_target_example | target example | 3/3 | 3/3 | 3/3 | 6.625 | Target examples are the most reliable baseline prompt overall, but passing examples still do not prove WGMMA/TMA-style target optimization. |
 
 Answer: in this baseline, hardware hints help only when they include a target-style example. Hardware name alone and feature-table text mainly produce claims or aligned-suite false positives; they do not produce robust H100 GEMM migration evidence.
 
