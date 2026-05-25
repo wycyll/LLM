@@ -65,7 +65,7 @@ This section answers the baseline prompt question using only P0-P3. The stricter
 | p2_hw_feature_table | hardware feature table | 3/9 | 1/3 | 1/2 | 5.550 | The feature table can produce an occasional robust sample, but it also increases feature claims and compile instability. |
 | p3_target_example | target example | 9/9 | 9/9 | 3/9 | 8.750 | Target examples are the most reliable baseline prompt overall, but passing examples still do not prove WGMMA/TMA-style target optimization. |
 
-Answer: in this baseline, hardware hints help only when they include a target-style example. Hardware name alone and feature-table text mainly produce claims or aligned-suite false positives; they do not produce robust H100 GEMM migration evidence.
+Answer: in this multi-target baseline, hardware hints are not a single monotonic improvement. No-hint and target-name prompts produce some audit-pass A100 samples, the feature table has only isolated success with compile instability, and target examples are strongest overall but not uniformly robust across target directions. Report the effect per task/prompt, and treat target examples as useful guidance rather than proof of hardware-optimal migration.
 
 ## Hardware Fit And Migration Boundary
 
@@ -115,11 +115,11 @@ LLM capability boundary observed so far:
 
 ### 2. What happens without hardware hints?
 
-Use the P0 row in the baseline ablation table above. In this P0-P3 baseline, no-hardware-hint generation does not produce a robust irregular-audit-pass H100 migration.
+Use the P0 row in the baseline ablation table above. In this multi-target baseline, no-hardware-hint generation can produce some audit-pass candidates, but success is task- and target-dependent and should not be treated as reliable hardware-style migration.
 
 ### 3. Do hardware hints and examples help?
 
-In this baseline, the target example P3 is the only prompt that reliably improves robustness. The target-name-only P1 and hardware-feature-table P2 variants mainly produce feature claims, compile failures, or aligned-suite false positives, not verified Hopper-style GEMM.
+In this multi-target baseline, hints and examples help unevenly. Target examples give the strongest overall robustness signal, especially for H100, but they are not uniformly correct across A100 back-migration tasks. Target-name and feature-table prompts can create some audit-pass samples, yet they also produce false positives and compile instability.
 
 ### 4. Do generated kernels compile, run, compute correctly, and perform?
 

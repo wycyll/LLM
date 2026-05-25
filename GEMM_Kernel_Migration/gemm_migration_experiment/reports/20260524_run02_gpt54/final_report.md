@@ -41,7 +41,7 @@ This section answers the baseline prompt question using only P0-P3. The stricter
 | p2_hw_feature_table | hardware feature table | 0/3 | 0/3 | 0/0 | - | The feature table does not help by itself here; it increases feature claims but hurts compile stability. |
 | p3_target_example | target example | 3/3 | 3/3 | 3/3 | 6.625 | Target examples are the most reliable baseline prompt overall, but passing examples still do not prove WGMMA/TMA-style target optimization. |
 
-Answer: in this baseline, hardware hints help only when they include a target-style example. Hardware name alone and feature-table text mainly produce claims or aligned-suite false positives; they do not produce robust H100 GEMM migration evidence.
+Answer: in this H100 baseline, hardware hints help only when they include a target-style example. Hardware name alone and feature-table text mainly produce claims or aligned-suite false positives; they do not produce robust H100 GEMM migration evidence.
 
 ## Hardware Fit And Migration Boundary
 
@@ -91,7 +91,7 @@ LLM capability boundary observed so far:
 
 ### 2. What happens without hardware hints?
 
-Use the P0 row in the baseline ablation table above. In this P0-P3 baseline, no-hardware-hint generation does not produce a robust irregular-audit-pass H100 migration.
+Use the P0 row in the baseline ablation table above. In this P0-P3 H100 baseline, no-hardware-hint generation does not produce a robust irregular-audit-pass H100 migration.
 
 ### 3. Do hardware hints and examples help?
 

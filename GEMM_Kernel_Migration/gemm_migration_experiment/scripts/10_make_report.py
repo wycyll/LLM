@@ -208,12 +208,13 @@ def baseline_ablation_section(run_id: str, rows) -> str:
         lines.append(
             f"| {prompt} | {labels[prompt]} | {len(compiled)}/{len(attempted)} | {len(aligned_ok)}/{len(compiled) if compiled else len(attempted)} | {len(prompt_pass_cases)}/{len(prompt_audit_cases)} | {best_text} | {interpretation} |"
         )
-    lines.extend(
-        [
-            "",
-            "Answer: in this baseline, hardware hints help only when they include a target-style example. Hardware name alone and feature-table text mainly produce claims or aligned-suite false positives; they do not produce robust H100 GEMM migration evidence.",
-        ]
-    )
+    evaluated_tasks = sorted({row.get("task_id", "") for row in rows if row.get("compile_status") != "not_run"})
+    evaluated_targets = sorted({task.split("_to_")[-1] for task in evaluated_tasks if "_to_" in task})
+    if evaluated_targets == ["h100"]:
+        answer = "Answer: in this H100 baseline, hardware hints help only when they include a target-style example. Hardware name alone and feature-table text mainly produce claims or aligned-suite false positives; they do not produce robust H100 GEMM migration evidence."
+    else:
+        answer = "Answer: in this multi-target baseline, hardware hints are not a single monotonic improvement. No-hint and target-name prompts produce some audit-pass A100 samples, the feature table has only isolated success with compile instability, and target examples are strongest overall but not uniformly robust across target directions. Report the effect per task/prompt, and treat target examples as useful guidance rather than proof of hardware-optimal migration."
+    lines.extend(["", answer])
     return "\n".join(lines)
 
 
@@ -249,15 +250,23 @@ LLM capability boundary observed so far:
 | Performance-portable architecture selection | Not demonstrated. The model does not reliably choose the right hardware-specific strategy or tune tile sizes/stages/occupancy from hardware names or feature tables alone. |"""
 
 
-def workflow_q2(prompts: set[str]) -> str:
+def workflow_q2(run_id: str, prompts: set[str], rows) -> str:
     if "p0_no_hw_hint" in prompts:
-        return "Use the P0 row in the baseline ablation table above. In this P0-P3 baseline, no-hardware-hint generation does not produce a robust irregular-audit-pass H100 migration."
+        evaluated_tasks = sorted({row.get("task_id", "") for row in rows if row.get("compile_status") != "not_run"})
+        evaluated_targets = sorted({task.split("_to_")[-1] for task in evaluated_tasks if "_to_" in task})
+        if evaluated_targets == ["h100"]:
+            return "Use the P0 row in the baseline ablation table above. In this P0-P3 H100 baseline, no-hardware-hint generation does not produce a robust irregular-audit-pass H100 migration."
+        return "Use the P0 row in the baseline ablation table above. In this multi-target baseline, no-hardware-hint generation can produce some audit-pass candidates, but success is task- and target-dependent and should not be treated as reliable hardware-style migration."
     return "This run does not include `p0_no_hw_hint`, so it cannot answer the no-hardware-hint question by itself. Use the P0-containing baseline runs for that comparison; this run is scoped to target-example, compile-safe, and KernelWiki-informed H100 prompts."
 
 
-def workflow_q3(prompts: set[str]) -> str:
+def workflow_q3(run_id: str, prompts: set[str], rows) -> str:
     baseline_prompts = {"p0_no_hw_hint", "p1_target_name_only", "p2_hw_feature_table", "p3_target_example"}
     if baseline_prompts.issubset(prompts):
+        evaluated_tasks = sorted({row.get("task_id", "") for row in rows if row.get("compile_status") != "not_run"})
+        evaluated_targets = sorted({task.split("_to_")[-1] for task in evaluated_tasks if "_to_" in task})
+        if evaluated_targets != ["h100"]:
+            return "In this multi-target baseline, hints and examples help unevenly. Target examples give the strongest overall robustness signal, especially for H100, but they are not uniformly correct across A100 back-migration tasks. Target-name and feature-table prompts can create some audit-pass samples, yet they also produce false positives and compile instability."
         return "In this baseline, the target example P3 is the only prompt that reliably improves robustness. The target-name-only P1 and hardware-feature-table P2 variants mainly produce feature claims, compile failures, or aligned-suite false positives, not verified Hopper-style GEMM."
     return "This run compares the available prompt variants in the table above. For the original P0/P1/P2/P3 hint ablation, use a run that contains all four baseline prompts; run04 mainly tests whether compile-safe and KernelWiki-informed prompts improve robustness or feature evidence relative to P3/P4-style prompts."
 
@@ -322,11 +331,11 @@ def main() -> int:
 
 ### 2. What happens without hardware hints?
 
-{workflow_q2(prompts)}
+{workflow_q2(args.run_id, prompts, rows)}
 
 ### 3. Do hardware hints and examples help?
 
-{workflow_q3(prompts)}
+{workflow_q3(args.run_id, prompts, rows)}
 
 ### 4. Do generated kernels compile, run, compute correctly, and perform?
 
