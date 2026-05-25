@@ -7,7 +7,7 @@
 - Compile success among attempted: 35/40 (87.5%)
 - Aligned correctness shapes passed among attempted: 31/40 (77.5%)
 - Performance measured among attempted: 20/40 (50.0%)
-- Static target-feature claim without SASS confirmation among attempted samples: 23/40 (57.5%)
+- Static WGMMA/TMA/cp.async claim without matching SASS confirmation among attempted samples: 23/40 (57.5%)
 
 ## Results By Task And Prompt
 
@@ -31,6 +31,16 @@ Overall audit pass: 20/33 (60.6%).
 | T2_a100_to_h100 | p6_kernelwiki_hopper_audit_safe | 7 | 6/7 (85.7%) |
 | T2_a100_to_h100 | p7_kernelwiki_hopper_feature_evidence | 6 | 5/6 (83.3%) |
 
+## Run Scope And Caveats
+
+- This run covers these prompt IDs only: `p3_target_example, p4_hopper_compile_safe, p6_kernelwiki_hopper_audit_safe, p7_kernelwiki_hopper_feature_evidence`.
+- It does not include the baseline prompts `p0_no_hw_hint`, `p1_target_name_only`, `p2_hw_feature_table`. Use P0/P1/P2-containing runs for no-hardware-hint, target-name-only, and hardware-feature-table conclusions.
+- The summary count `23/40` is a row-level rule: a sample is counted when `static_features` contains one of `wgmma, tma, cp_async` but `sass_features` contains none of those same tokens. It is not computed by subtracting aggregate table percentages, and one sample can contain multiple static features.
+- `target_sass` is evidence that selected instruction-family tokens appear in SASS. It is not a performance claim and does not imply the kernel is correct, robust, or fast.
+- Nsight Compute profile evidence is unavailable for this run, so hardware-feature confirmation here is limited to static source scanning and SASS inspection.
+- Performance was measured for 20 kernels selected after the irregular-shape audit, producing 120 shape-level rows. Treat `perf_valid` as an audit-pass selected subset, not as a measurement over every aligned-correct kernel.
+- `p4_hopper_compile_safe` has no performance rows because it passed 0/10 irregular-audit cases and was filtered out before formal timing. The audit logs include `misaligned address` failures. Do not interpret its `perf_valid=0` as a measured slow kernel.
+
 ## Workflow Questions
 
 ### 1. Which hardware features matter for V100/A100/H100 GEMM?
@@ -41,11 +51,11 @@ Overall audit pass: 20/33 (60.6%).
 
 ### 2. What happens without hardware hints?
 
-Use rows with `prompt_id=p0_no_hw_hint` to compare compile/correctness rates and whether static/SASS target features appear. If P0 compiles but has no H100 WGMMA/TMA evidence, it is a runnable migration rather than a Hopper-style migration.
+This run does not include `p0_no_hw_hint`, so it cannot answer the no-hardware-hint question by itself. Use the P0-containing baseline runs for that comparison; this run is scoped to target-example, compile-safe, and KernelWiki-informed H100 prompts.
 
 ### 3. Do hardware hints and examples help?
 
-Compare P1, P2, and P3 against P0 in the table above. A useful hint should improve compile/correctness/performance or increase confirmed target-feature evidence, not only increase keyword frequency.
+This run compares the available prompt variants in the table above. For the original P0/P1/P2/P3 hint ablation, use a run that contains all four baseline prompts; run04 mainly tests whether compile-safe and KernelWiki-informed prompts improve robustness or feature evidence relative to P3/P4-style prompts.
 
 ### 4. Do generated kernels compile, run, compute correctly, and perform?
 
